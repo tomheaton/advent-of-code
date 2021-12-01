@@ -9,9 +9,9 @@ if __name__ == "__main__":
     three_list: [int] = []
 
     with open("input.txt", "r") as input_file:
-        for index, line in enumerate(lines := input_file.readlines()):
+        for index, line in enumerate(lines := [int(x) for x in input_file.readlines()]):
             try:
-                three_list.append(int(lines[index]) + int(lines[index + 1]) + int(lines[index + 2]))
+                three_list.append(lines[index] + lines[index + 1] + lines[index + 2])
             except IndexError as e:
                 pass
 
