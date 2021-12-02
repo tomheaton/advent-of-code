@@ -18,8 +18,10 @@ if __name__ == "__main__":
 
             if "forward" in line:
                 horizontal += value
+
             if "up" in line:
                 depth -= value
+
             if "down" in line:
                 depth += value
 
