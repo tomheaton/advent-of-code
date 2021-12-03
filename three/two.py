@@ -3,63 +3,80 @@
 
 if __name__ == "__main__":
 
-    life_support_rating: int = 0
     oxygen_rating: int = 0
     co2_rating: int = 0
 
-    zero_count: list[int] = []
-    one_count: list[int] = []
+    with open("input.txt", "r") as input_file:
+        value_list = [x.strip("\n") for x in input_file.readlines()]
+        oxygen_rating_list = value_list
+        co2_rating_list = value_list
 
-    value_list: list[str] = []
+    bit_length: int = len(value_list[0])
+    print(f'{bit_length = }')
 
-    length: int = 0
+    # Oxygen Rating:
 
-    with open("input-test.txt", "r") as input_file:
+    round_count: int = 0
 
-        length = len(input_file.readline().strip("\n"))
+    while len(value_list) > 1:
 
-        zero_count = [0 for x in range(length)]
-        one_count = [0 for x in range(length)]
+        one_count: list[int] = [0 for _ in range(bit_length)]
+        zero_count: list[int] = [0 for _ in range(bit_length)]
 
-        for line in (lines := input_file.readlines()):
+        print(f'\n{round_count = }')
+        print(f'(before) {value_list = }')
 
-            line = line.strip("\n")
+        for index, value in enumerate(value_list):
 
-            for i in range(length):
-                if line[i] == "0":
+            for i in range(bit_length):
+                if value[i] == "0":
                     zero_count[i] += 1
                 else:
                     one_count[i] += 1
 
-            # print(f'{line = }')
-
-    value_list = [x.strip("\n") for x in lines]
-
-    print(f'{zero_count = }, {one_count = }')
-
-    print(f'{value_list = }')
-
-    for i in range(length):
-        if len(value_list) == 1:
-            break
-
-        zero_count = [0 for x in range(length)]
-        one_count = [0 for x in range(length)]
-
-        for j in range(length):
-            if line[j] == "0":
-                zero_count[j] += 1
-            else:
-                one_count[j] += 1
-
-        print(f'{zero_count = }, {one_count = }')
-
-        if one_count[i] >= zero_count[i]:
-            value_list = [x for x in value_list if x[i] == "1"]
+        if one_count[round_count] >= zero_count[round_count]:
+            value_list = [x for x in value_list if x[round_count] == "1"]
         else:
-            value_list = [x for x in value_list if x[i] == "0"]
+            value_list = [x for x in value_list if x[round_count] == "0"]
 
-        print(f'({i}) {value_list = }')
+        print(f'(after) {value_list = }')
 
-    life_support_rating = oxygen_rating * co2_rating
-    print(f'{life_support_rating = }')
+        round_count += 1
+
+    # CO2 Rating:
+
+    round_count: int = 0
+
+    while len(co2_rating_list) > 1:
+
+        one_count: list[int] = [0 for _ in range(bit_length)]
+        zero_count: list[int] = [0 for _ in range(bit_length)]
+
+        print(f'\n{round_count = }')
+        print(f'(before) {co2_rating_list = }')
+
+        for index, value in enumerate(co2_rating_list):
+
+            for i in range(bit_length):
+                if value[i] == "0":
+                    zero_count[i] += 1
+                else:
+                    one_count[i] += 1
+
+        if one_count[round_count] >= zero_count[round_count]:
+            co2_rating_list = [x for x in co2_rating_list if x[round_count] == "0"]
+        else:
+            co2_rating_list = [x for x in co2_rating_list if x[round_count] == "1"]
+
+        print(f'(after) {co2_rating_list = }')
+
+        round_count += 1
+
+    oxygen_rating = int(value_list[0], 2)
+    print(f'\n{oxygen_rating = }')
+
+    co2_rating = int(co2_rating_list[0], 2)
+    print(f'{co2_rating = }')
+
+    life_support_rating: int = oxygen_rating * co2_rating
+    print(f'\n{life_support_rating = }')
