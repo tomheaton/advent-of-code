@@ -6,19 +6,20 @@ const getInputs = (): string[] => {
     return data.toString().split("\r\n");
 }
 
-
 console.log("01");
 
-console.log(getInputs());
+let max = 0;
+let current = 0;
 
-let answer = 0;
-
-getInputs().forEach((calories, index) => {
+getInputs().forEach((calories) => {
     if (!calories) {
-        answer = 0;
+        if (current > max) {
+            max = current;
+        }
+        current = 0;
         return;
     }
-    answer += Number(calories);
+    current += Number(calories);
 });
 
-console.log("answer: " + answer);
+console.log("max: " + max);
