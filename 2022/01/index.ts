@@ -1,25 +1,29 @@
 import {readFileSync} from "fs";
 
-const getInputs = (): string[] => {
-    let data = readFileSync("./input.txt", {encoding: "utf-8"})
+const getInputs = (test?: boolean): string[] => {
+    let data = readFileSync(`./input${test ? ".test" : ""}.txt`, {encoding: "utf-8"})
     if (!data) throw new Error("no data found");
     return data.toString().split("\r\n");
 }
 
 console.log("01");
 
-let max = 0;
-let current = 0;
+let accumulator = 0;
+let elves: number[] = []
 
 getInputs().forEach((calories) => {
     if (!calories) {
-        if (current > max) {
-            max = current;
-        }
-        current = 0;
+        elves.push(accumulator);
+        accumulator = 0;
         return;
     }
-    current += Number(calories);
+    accumulator += Number(calories);
 });
+elves.push(accumulator)
 
-console.log("max: " + max);
+elves = elves.sort((a, b) => b - a);
+let topOne = elves.slice(0, 1).reduce((acc, cur) => acc + cur, 0)
+let topThree = elves.slice(0, 3).reduce((acc, cur) => acc + cur, 0)
+
+console.log("topOne: " + topOne);
+console.log("topThree: " + topThree);
