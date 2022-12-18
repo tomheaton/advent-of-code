@@ -8,8 +8,8 @@
     "start": "tsc && node .",
     "dev": "ts-node ."
   },
-  "author": "",
-  "license": "ISC",
+  "author": "tomheaton",
+  "license": "MIT",
   "devDependencies": {
     "@types/node": "^18.11.10",
     "ts-node": "^10.9.1",
