@@ -27,21 +27,15 @@ const getScore = (a: typeof aMoves[number], b: typeof bMoves[number]): number =>
 
   if (aIndex === bIndex) return score + DRAW;
 
-  if (a === "A") return (score + (b === "Y" ? WIN : LOSS));
-  if (a === "B") return (score + (b === "Z" ? WIN : LOSS));
-  return (score + (b === "X" ? WIN : LOSS));
+  if (a === "A") return score + (b === "Y" ? WIN : LOSS);
+  if (a === "B") return score + (b === "Z" ? WIN : LOSS);
+  return score + (b === "X" ? WIN : LOSS);
 }
 
 let score = 0;
 
-getInputs(true).forEach((game) => {
-  console.log("game: " + game);
+getInputs().forEach((game) => {
   let [a, b] = (game as Game).split(" ") as [typeof aMoves[number], typeof bMoves[number]];
-
-  console.log("a: " + a);
-  console.log("b: " + b);
-  console.log("score: " + getScore(a, b));
-
   score += getScore(a, b);
 });
 
@@ -54,35 +48,28 @@ score = 0;
 const getScoreNew = (a: typeof aMoves[number], b: typeof bMoves[number]): number => {
   let aIndex = aMoves.indexOf(a);
 
-  let moveToLoseIndex = (aIndex + 1) % 3;
-  let moveToDrawIndex = (aIndex + 3) % 3;
-  let moveToWinIndex = (aIndex + 2) % 3;
-
-  // lose
+  // loss
   if (b === "X") {
+    let moveToLoseIndex = (aIndex + 2) % 3;
     console.log(a, "needs", aMoves[moveToLoseIndex], "to lose");
-    return (1 + moveToLoseIndex + LOSS);
+    return 1 + moveToLoseIndex + LOSS;
   }
 
   // draw
   if (b === "Y") {
+    let moveToDrawIndex = (aIndex + 3) % 3;
     console.log(a, "needs", aMoves[moveToDrawIndex], "to draw");
-    return (1 + moveToDrawIndex + DRAW);
+    return 1 + moveToDrawIndex + DRAW;
   }
 
   // win
+  let moveToWinIndex = (aIndex + 1) % 3;
   console.log(a, "needs", aMoves[moveToWinIndex], "to win");
-  return (1 + moveToWinIndex + WIN);
+  return 1 + moveToWinIndex + WIN;
 }
 
-getInputs(true).forEach((game) => {
-  console.log("game: " + game);
+getInputs().forEach((game) => {
   let [a, b] = (game as Game).split(" ") as [typeof aMoves[number], typeof bMoves[number]];
-
-  console.log("a: " + a);
-  console.log("b: " + b);
-  console.log("score: " + getScoreNew(a, b));
-
   score += getScoreNew(a, b);
 });
 
