@@ -3,7 +3,7 @@ import {readFileSync} from "fs";
 const getInputs = (test?: boolean): string[] => {
   let data = readFileSync(`./input${test ? ".test" : ""}.txt`, {encoding: "utf-8"})
   if (!data) throw new Error("no data found");
-  return data.toString().split("\r\n");
+  return data.toString().split("\n");
 }
 
 console.log("02");
@@ -20,8 +20,6 @@ const DRAW = 3;
 const WIN = 6;
 
 const getScore = (a: typeof aMoves[number], b: typeof bMoves[number]): number => {
-  console.log("a -> here");
-
   let aIndex = aMoves.indexOf(a);
   let bIndex = bMoves.indexOf(b);
 
@@ -29,16 +27,20 @@ const getScore = (a: typeof aMoves[number], b: typeof bMoves[number]): number =>
 
   if (aIndex === bIndex) return score + DRAW;
 
-  if (a === "A") return score + (b === "Y" ? WIN : LOSS);
-  if (a === "B") return score + (b === "Z" ? WIN : LOSS);
-  return score + (b === "X" ? WIN : LOSS);
+  if (a === "A") return (score + (b === "Y" ? WIN : LOSS));
+  if (a === "B") return (score + (b === "Z" ? WIN : LOSS));
+  return (score + (b === "X" ? WIN : LOSS));
 }
 
 let score = 0;
 
 getInputs(true).forEach((game) => {
+  console.log("game: " + game);
   let [a, b] = (game as Game).split(" ") as [typeof aMoves[number], typeof bMoves[number]];
-  console.log(getScore(a, b));
+
+  console.log("a: " + a);
+  console.log("b: " + b);
+  console.log("score: " + getScore(a, b));
 
   score += getScore(a, b);
 });
@@ -50,8 +52,6 @@ console.log("part b");
 score = 0;
 
 const getScoreNew = (a: typeof aMoves[number], b: typeof bMoves[number]): number => {
-  console.log("b -> here");
-
   let aIndex = aMoves.indexOf(a);
 
   let moveToLoseIndex = (aIndex + 1) % 3;
@@ -76,10 +76,14 @@ const getScoreNew = (a: typeof aMoves[number], b: typeof bMoves[number]): number
 }
 
 getInputs(true).forEach((game) => {
-  console.log("game:", game);
-
+  console.log("game: " + game);
   let [a, b] = (game as Game).split(" ") as [typeof aMoves[number], typeof bMoves[number]];
-  score += getScore(a, b);
+
+  console.log("a: " + a);
+  console.log("b: " + b);
+  console.log("score: " + getScoreNew(a, b));
+
+  score += getScoreNew(a, b);
 });
 
 console.log("score: " + score);
