@@ -8,6 +8,8 @@ const getInputs = (test?: boolean): string[] => {
 
 console.log("02");
 
+console.log("part a");
+
 const aMoves = ["A", "B", "C"] as const;
 const bMoves = ["X", "Y", "Z"] as const;
 
@@ -35,6 +37,20 @@ type Game = `${"A" | "B" | "C"} ${"X" | "Y" | "Z"}`;
 getInputs().forEach((game) => {
     let [a, b] = (game as Game).split(" ") as ["A" | "B" | "C", "X" | "Y" | "Z"];
     score += getScore(a, b);
+});
+
+console.log("score: " + score);
+
+console.log("part b");
+
+score = 0;
+
+// lose, draw, win
+const outcomes = ["X", "Y", "Z"] as const;
+
+getInputs(true).forEach((game) => {
+  let [a, b] = (game as Game).split(" ") as ["A" | "B" | "C", "X" | "Y" | "Z"];
+  score += getScore(a, b);
 });
 
 console.log("score: " + score);

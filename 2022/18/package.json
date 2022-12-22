@@ -6,7 +6,7 @@
   "source": "./index.ts",
   "scripts": {
     "start": "tsc && node .",
-    "dev": "ts-node ."
+    "dev": "ts-node ./index.ts"
   },
   "author": "tomheaton",
   "license": "MIT",
