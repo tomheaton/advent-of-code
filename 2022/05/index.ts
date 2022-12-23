@@ -13,7 +13,7 @@ console.log("part a");
 let foundBreak = false;
 
 let stacks: string[][] = [];
-let data: string[][] = [];
+let rawData: string[][] = [];
 
 getInputs(true).forEach((row) => {
   if (row === "") foundBreak = true;
@@ -21,19 +21,22 @@ getInputs(true).forEach((row) => {
   // parse stacks
   if (!foundBreak) {
     let rowData = [...row].filter((_, index) => index % 4 === 1);
-    console.log(rowData);
-    data.push(rowData);
+    rawData.push(rowData);
     return;
   }
 
   // TODO: parse commands
 });
 
-// TODO: sort stacks
+let indexes = rawData.pop();
+
+stacks = rawData[0]
+  .map((_, colIndex) => rawData.map(row => row[colIndex]))
+  .map((row) => row.filter((v) => v !== " ").reverse());
+
 // TODO: sort commands
 
 console.log(stacks);
-
 
 // console.log("part b");
 
