@@ -13,29 +13,24 @@ console.log("part a");
 let foundBreak = false;
 
 let stacks: string[][] = [];
+let data: string[][] = [];
 
-getInputs(true).slice(0, 1).forEach((row) => {
-  console.log(row);
+getInputs(true).forEach((row) => {
+  if (row === "") foundBreak = true;
 
-  let spaceCount = 0;
-
+  // parse stacks
   if (!foundBreak) {
-    for (const c of row) {
-
-      if (c === "[") {
-        let currentStack: string[] = [];
-        stacks.push(currentStack);
-        continue;
-      }
-
-      if (c === " ") {
-        spaceCount++;
-        continue;
-      }
-    }
+    let rowData = [...row].filter((_, index) => index % 4 === 1);
+    console.log(rowData);
+    data.push(rowData);
+    return;
   }
 
+  // TODO: parse commands
 });
+
+// TODO: sort stacks
+// TODO: sort commands
 
 console.log(stacks);
 
