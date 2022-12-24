@@ -11,23 +11,32 @@ console.log("06");
 console.log("part a");
 
 let count = 0;
+let marker = "";
 
 getInputs(true).forEach((row) => {
   [...row].forEach((char, index) => {
     // console.log(char);
 
-    let prevChars = row.slice(0, index);
+    // if (marker.length === 4) return;
+
+    // get a list of all the characters before the current character
+    let prevChars = row.slice(index - 1, index);
+    console.log(prevChars);
+
+    return;
+
 
     if (!prevChars.includes(char)) {
       count++;
+      marker += char;
+      console.log("marker:", marker);
     } else {
-      count = 0;
+      marker = "";
     }
-
-    console.log("count:", count);
   });
 });
 
+console.log("marker:", marker);
 console.log("count:", count);
 
 // console.log("part b");
