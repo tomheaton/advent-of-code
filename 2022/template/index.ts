@@ -1,4 +1,4 @@
-import {readFileSync} from "fs";
+import {readFileSync} from "node:fs";
 
 const getInputs = (test?: boolean): string[] => {
   let data = readFileSync(`./input${test ? ".test" : ""}.txt`, {encoding: "utf-8"});
