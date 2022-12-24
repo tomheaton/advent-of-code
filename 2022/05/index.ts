@@ -54,24 +54,20 @@ stacks = rawData[0]
   .map((_, colIndex) => rawData.map(row => row[colIndex]))
   .map((row) => row.filter((v) => v !== " ").reverse());
 
-// TODO: sort commands
-
-// console.log(stacks);
-// console.log(commands);
-
 commands.forEach((command) => {
   let fromStack = stacks[command.from - 1];
   let toStack = stacks[command.to - 1];
 
   let items = fromStack.splice(fromStack.length - command.amount, command.amount);
-  toStack.push(...items.reverse());
+  // toStack.push(...items.reverse()); // part a
+  toStack.push(...items); // part b
 });
 
 let message = stacks.map((stack) => {
   return stack.pop();
 }).join("");
 
-console.log(message);
+console.log("message:", message);
 
 // console.log("part b");
 
