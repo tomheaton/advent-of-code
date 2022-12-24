@@ -1,3 +1,4 @@
+import { strictEqual } from "assert";
 import {readFileSync} from "fs";
 
 const getInputs = (test?: boolean): string[] => {
@@ -15,8 +16,19 @@ let foundBreak = false;
 let stacks: string[][] = [];
 let rawData: string[][] = [];
 
-getInputs(true).forEach((row) => {
-  if (row === "") foundBreak = true;
+let commands: Command[] = [];
+
+type Command = {
+  amount: number;
+  to: number;
+  from: number;
+}
+
+getInputs().forEach((row) => {
+  if (row === "") {
+    foundBreak = true;
+    return;
+  }
 
   // parse stacks
   if (!foundBreak) {
@@ -25,10 +37,18 @@ getInputs(true).forEach((row) => {
     return;
   }
 
-  // TODO: parse commands
+  // parse commands
+  let numbers = row.match(/\d+/g);
+  if (!numbers) throw new Error("no numbers found");
+
+  commands.push({
+    amount: parseInt(numbers[0]),
+    from: parseInt(numbers[1]),
+    to: parseInt(numbers[2]),
+    });
 });
 
-let indexes = rawData.pop();
+rawData.pop();
 
 stacks = rawData[0]
   .map((_, colIndex) => rawData.map(row => row[colIndex]))
@@ -36,7 +56,22 @@ stacks = rawData[0]
 
 // TODO: sort commands
 
-console.log(stacks);
+// console.log(stacks);
+// console.log(commands);
+
+commands.forEach((command) => {
+  let fromStack = stacks[command.from - 1];
+  let toStack = stacks[command.to - 1];
+
+  let items = fromStack.splice(fromStack.length - command.amount, command.amount);
+  toStack.push(...items.reverse());
+});
+
+let message = stacks.map((stack) => {
+  return stack.pop();
+}).join("");
+
+console.log(message);
 
 // console.log("part b");
 
