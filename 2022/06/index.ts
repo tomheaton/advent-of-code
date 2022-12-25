@@ -27,8 +27,21 @@ getInputs().forEach((row) => {
   });
 });
 
-// console.log("part b");
+console.log("part b");
 
-// getInputs(true).forEach((row) => {
-//   console.log(row);
-// });
+let message: string[] = [];
+
+getInputs().forEach((row) => {
+  [...row].some((char, index) => {
+    message.push(char);
+
+    if (message.length > 14) {
+      message.shift();
+    }
+
+    if (message.length === 14 && (new Set(message)).size === message.length) {
+      console.log("location:", index + 1);
+      return true;
+    }
+  });
+});
