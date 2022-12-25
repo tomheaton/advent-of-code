@@ -10,34 +10,22 @@ console.log("06");
 
 console.log("part a");
 
-let count = 0;
-let marker = "";
+let marker: string[] = [];
 
-getInputs(true).forEach((row) => {
-  [...row].forEach((char, index) => {
-    // console.log(char);
+getInputs().forEach((row) => {
+  [...row].some((char, index) => {
+    marker.push(char);
 
-    // if (marker.length === 4) return;
+    if (marker.length > 4) {
+      marker.shift();
+    }
 
-    // get a list of all the characters before the current character
-    let prevChars = row.slice(index - 1, index);
-    console.log(prevChars);
-
-    return;
-
-
-    if (!prevChars.includes(char)) {
-      count++;
-      marker += char;
-      console.log("marker:", marker);
-    } else {
-      marker = "";
+    if (marker.length === 4 && (new Set(marker)).size === marker.length) {
+      console.log("location:", index + 1);
+      return true;
     }
   });
 });
-
-console.log("marker:", marker);
-console.log("count:", count);
 
 // console.log("part b");
 
