@@ -2,4 +2,4 @@
 
 Advent of Code
 
-Link: https://adventofcode.com/
+Link: [https://adventofcode.com](https://adventofcode.com)
