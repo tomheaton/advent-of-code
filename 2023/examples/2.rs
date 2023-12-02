@@ -69,10 +69,6 @@ fn part_2() {
     for line in input.lines() {
         let game = line.split(": ").collect::<Vec<&str>>();
 
-        // TODO: game id is just index + 1 so this is unnecessary
-        let game_id_str = game[0].split(" ").collect::<Vec<&str>>()[1];
-        let game_id = str::parse::<i32>(&game_id_str).unwrap();
-
         let sets = game[1].split("; ").collect::<Vec<&str>>();
 
         let mut red_min = 0;
