@@ -1,11 +1,12 @@
 fn main() {
-    part_1();
-    part_2();
+    let day = 1;
+    let input = aoc_2023::get_input(day, false);
+    println!("Day {}", day);
+    part_1(input.clone());
+    part_2(input.clone());
 }
 
-fn part_1() {
-    let input = aoc_2023::get_input(1, false);
-
+fn part_1(input: String) {
     let mut sum = 0;
 
     for line in input.lines() {
@@ -30,9 +31,7 @@ fn part_1() {
     println!("Part 1: {}", sum);
 }
 
-fn part_2() {
-    let input = aoc_2023::get_input(1, false);
-
+fn part_2(input: String) {
     let text_numbers = vec![
         "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
     ];

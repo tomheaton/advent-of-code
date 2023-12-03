@@ -1,11 +1,12 @@
 fn main() {
-    part_1();
-    part_2();
+    let day = 2;
+    let input = aoc_2023::get_input(day, false);
+    println!("Day {}", day);
+    part_1(input.clone());
+    part_2(input.clone());
 }
 
-fn part_1() {
-    let input = aoc_2023::get_input(2, false);
-
+fn part_1(input: String) {
     let mut answer = 0;
 
     let red_max = 12;
@@ -61,9 +62,7 @@ fn part_1() {
     println!("Part 1: {}", answer);
 }
 
-fn part_2() {
-    let input = aoc_2023::get_input(2, false);
-
+fn part_2(input: String) {
     let mut answer = 0;
 
     for line in input.lines() {
