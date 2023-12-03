@@ -6,8 +6,6 @@ fn main() {
     part_2(input.clone());
 }
 
-// 75741499
-
 struct PartNumber {
     pub number_str: String,
     pub start_x: i32,
