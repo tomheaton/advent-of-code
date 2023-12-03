@@ -6,11 +6,14 @@ fn main() {
     part_2(input.clone());
 }
 
+// 75741499
+
 struct PartNumber {
     pub number_str: String,
     pub start_x: i32,
     pub start_y: i32,
     pub is_part: bool,
+    pub gears: Vec<(i32, i32)>,
 }
 
 impl PartNumber {
@@ -20,6 +23,7 @@ impl PartNumber {
             start_x: 0,
             start_y: 0,
             is_part: false,
+            gears: Vec::new(),
         };
     }
 }
@@ -35,13 +39,9 @@ fn part_1(input: String) {
     let mut part_numbers = Vec::new();
 
     for (y, line) in input.lines().enumerate() {
-        // println!("{}", line);
-
         let mut current_part_number = PartNumber::new();
 
         for (x, c) in line.chars().enumerate() {
-            // println!("{}", c);
-
             if c.is_numeric() {
                 if current_part_number.number_str.len() == 0 {
                     current_part_number.start_x = x as i32;
@@ -57,20 +57,12 @@ fn part_1(input: String) {
                 continue;
             }
 
-            // println!(
-            //     "adding part number: {:?}",
-            //     current_part_number.number_str
-            // );
             part_numbers.push(current_part_number);
             current_part_number = PartNumber::new();
         }
 
         // add the last part number of the line
         if current_part_number.number_str.len() > 0 {
-            // println!(
-            //     "adding part number: {:?}",
-            //     current_part_number.number_str
-            // );
             part_numbers.push(current_part_number);
         }
     }
@@ -78,8 +70,6 @@ fn part_1(input: String) {
     let line_width = input.lines().next().unwrap().len() as i32;
 
     for part_number in part_numbers.iter_mut() {
-        // println!();
-
         let number_str_length = part_number.number_str.len();
 
         let mut coords = Vec::new();
@@ -98,9 +88,6 @@ fn part_1(input: String) {
             coords.push((part_number.start_x + number_str_length as i32, y));
         }
 
-        // println!("coords: {:?}", coords);
-        // println!("len: {}", coords.len());
-
         coords.retain(|(x, y)| {
             *x >= 0
                 && *x < line_width
@@ -108,40 +95,22 @@ fn part_1(input: String) {
                 && *y < input.lines().count() as i32
         });
 
-        // println!("coords: {:?}", coords);
-        // println!("len: {}", coords.len());
-
         for coord in coords {
             let index =
                 coord.1 as usize * line_width as usize + coord.0 as usize;
             let character = chars[index];
-            // println!("{:?}: {}", coord, character);
 
             if character != '.' && !character.is_numeric() {
-                // println!("{} is a part number", part_number.number_str);
                 part_number.is_part = true;
                 break;
-            } else {
-                // println!("{} is not a part number", part_number.number_str);
             }
         }
     }
 
     for part_number in part_numbers.iter() {
-        // println!(
-        //     "{}: {} {} {}",
-        //     part_number.number_str,
-        //     part_number.start_x,
-        //     part_number.start_y,
-        //     part_number.is_part
-        // );
-
         if part_number.is_part {
             let number = part_number.number_str.parse::<i32>().unwrap();
-            // println!("adding {}", number);
             answer += number;
-        } else {
-            // println!("{} is not a part number", part_number.number_str);
         }
     }
 
@@ -159,13 +128,9 @@ fn part_2(input: String) {
     let mut part_numbers = Vec::new();
 
     for (y, line) in input.lines().enumerate() {
-        // println!("{}", line);
-
         let mut current_part_number = PartNumber::new();
 
         for (x, c) in line.chars().enumerate() {
-            // println!("{}", c);
-
             if c.is_numeric() {
                 if current_part_number.number_str.len() == 0 {
                     current_part_number.start_x = x as i32;
@@ -173,7 +138,6 @@ fn part_2(input: String) {
                 }
 
                 current_part_number.number_str.push(c);
-
                 continue;
             }
 
@@ -181,20 +145,12 @@ fn part_2(input: String) {
                 continue;
             }
 
-            // println!(
-            //     "adding part number: {:?}",
-            //     current_part_number.number_str
-            // );
             part_numbers.push(current_part_number);
             current_part_number = PartNumber::new();
         }
 
         // add the last part number of the line
         if current_part_number.number_str.len() > 0 {
-            // println!(
-            //     "adding part number: {:?}",
-            //     current_part_number.number_str
-            // );
             part_numbers.push(current_part_number);
         }
     }
@@ -202,8 +158,6 @@ fn part_2(input: String) {
     let line_width = input.lines().next().unwrap().len() as i32;
 
     for part_number in part_numbers.iter_mut() {
-        // println!();
-
         let number_str_length = part_number.number_str.len();
 
         let mut coords = Vec::new();
@@ -222,9 +176,6 @@ fn part_2(input: String) {
             coords.push((part_number.start_x + number_str_length as i32, y));
         }
 
-        // println!("coords: {:?}", coords);
-        // println!("len: {}", coords.len());
-
         coords.retain(|(x, y)| {
             *x >= 0
                 && *x < line_width
@@ -232,42 +183,38 @@ fn part_2(input: String) {
                 && *y < input.lines().count() as i32
         });
 
-        // println!("coords: {:?}", coords);
-        // println!("len: {}", coords.len());
-
         for coord in coords {
             let index =
                 coord.1 as usize * line_width as usize + coord.0 as usize;
             let character = chars[index];
-            // println!("{:?}: {}", coord, character);
 
             if character != '.' && !character.is_numeric() {
-                // println!("{} is a part number", part_number.number_str);
                 part_number.is_part = true;
-                break;
-            } else {
-                // println!("{} is not a part number", part_number.number_str);
+                part_number.gears.push(coord);
             }
         }
     }
 
-    for part_number in part_numbers.iter() {
-        // println!(
-        //     "{}: {} {} {}",
-        //     part_number.number_str,
-        //     part_number.start_x,
-        //     part_number.start_y,
-        //     part_number.is_part
-        // );
+    for i in 0..part_numbers.len() {
+        for j in 0..part_numbers.len() {
+            if i == j {
+                continue;
+            }
 
-        if part_number.is_part {
-            let number = part_number.number_str.parse::<i32>().unwrap();
-            // println!("adding {}", number);
-            answer += number;
-        } else {
-            // println!("{} is not a part number", part_number.number_str);
+            let has_shared_parts =
+                part_numbers[i].gears.iter().any(|&gear_a| {
+                    part_numbers[j].gears.iter().any(|&gear_b| gear_a == gear_b)
+                });
+
+            if has_shared_parts {
+                let number_a =
+                    part_numbers[i].number_str.parse::<i32>().unwrap();
+                let number_b =
+                    part_numbers[j].number_str.parse::<i32>().unwrap();
+                answer += number_a * number_b;
+            }
         }
     }
 
-    println!("Part 2: {}", answer);
+    println!("Part 2: {}", answer / 2);
 }
