@@ -44,8 +44,8 @@ fn part_2(input: String) {
 
     while card_numbers_to_play.len() > 0 {
         let card_number = card_numbers_to_play.pop().unwrap();
-        let line = input.lines().nth(card_number - 1).unwrap();
 
+        let line = input.lines().nth(card_number - 1).unwrap();
         let data = line.split([':', '|']).collect::<Vec<&str>>();
 
         let winning_numbers = data[1]
@@ -63,12 +63,13 @@ fn part_2(input: String) {
             .filter(|x| winning_numbers.contains(x))
             .collect::<Vec<&i32>>();
 
-        let card_ids_won = ((card_number + 1)..card_number + matches.len() + 1)
+        let card_numbers_won = ((card_number + 1)
+            ..card_number + matches.len() + 1)
             .collect::<Vec<usize>>();
 
-        answer += card_ids_won.len();
+        answer += card_numbers_won.len();
 
-        card_numbers_to_play.extend(card_ids_won);
+        card_numbers_to_play.extend(card_numbers_won);
     }
 
     println!("Part 2: {}", answer);
