@@ -18,9 +18,9 @@ fn part_1(input: String) {
     let mut answer = 1;
 
     let time_data = input.lines().nth(0).unwrap();
-    let distance_data = input.lines().nth(1).unwrap();
-
     let times = time_data.split_whitespace().skip(1).collect::<Vec<&str>>();
+
+    let distance_data = input.lines().nth(1).unwrap();
     let distances = distance_data
         .split_whitespace()
         .skip(1)
@@ -29,8 +29,8 @@ fn part_1(input: String) {
     for i in 0..times.len() {
         let mut ways_to_beat_record = Vec::new();
 
-        let time = times[i].parse::<i32>().unwrap();
-        let distance = distances[i].parse::<i32>().unwrap();
+        let time = times[i].parse::<u32>().unwrap();
+        let distance = distances[i].parse::<u32>().unwrap();
 
         for ms in 0..time {
             let speed = ms;
@@ -49,6 +49,37 @@ fn part_1(input: String) {
 
 fn part_2(input: String) {
     let mut answer = 1;
+
+    let time_data = input.lines().nth(0).unwrap();
+    let time = time_data
+        .split_whitespace()
+        .skip(1)
+        .collect::<Vec<&str>>()
+        .join("")
+        .parse::<u64>()
+        .unwrap();
+
+    let distance_data = input.lines().nth(1).unwrap();
+    let distance = distance_data
+        .split_whitespace()
+        .skip(1)
+        .collect::<Vec<&str>>()
+        .join("")
+        .parse::<u64>()
+        .unwrap();
+
+    let mut ways_to_beat_record = Vec::new();
+
+    for ms in 0..time {
+        let speed = ms;
+        let time_left = time - ms;
+
+        if speed * time_left > distance {
+            ways_to_beat_record.push(ms);
+        }
+    }
+
+    answer *= ways_to_beat_record.len();
 
     println!("Part 2: {}", answer);
 }
