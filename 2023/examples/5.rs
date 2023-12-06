@@ -6,102 +6,122 @@ fn main() {
     part_2(input.clone());
 }
 
-#[derive(Debug, Clone, Copy)]
-struct Seed {
-    pub seed: i64,
-    pub soil: i64,
-}
-
-impl Seed {
-    pub fn new(seed: i64) -> Seed {
-        return Seed { seed, soil: seed };
-    }
-}
-
 fn part_1(input: String) {
     let answer;
 
-    let seeds_line = input.lines().next().unwrap();
-    let seeds_line_data = seeds_line.split(':').collect::<Vec<&str>>();
-
-    let mut seeds = seeds_line_data[1]
+    let mut seeds = input
+        .lines()
+        .next()
+        .unwrap()
+        .split(':')
+        .nth(1)
+        .unwrap()
         .trim()
-        .split(' ')
-        .map(|x| Seed::new(x.parse::<i64>().unwrap()))
-        .collect::<Vec<Seed>>();
-
-    // println!("seeds:");
-    // for seed in seeds.clone() {
-    //     println!("{:?}", seed);
-    // }
+        .split_whitespace()
+        .map(|x| x.parse::<u32>().unwrap())
+        .collect::<Vec<u32>>();
 
     let mut sections = Vec::new();
     let mut section = Vec::new();
 
     for line in input.lines().skip(2) {
         if line.is_empty() {
-            // println!("end of section");
             sections.push(section.clone());
             continue;
         }
+
         if line.ends_with(':') {
-            // println!("new section");
             section = Vec::new();
             continue;
         }
 
         let line_data = line
             .split(' ')
-            .map(|x| x.parse::<i64>().unwrap())
-            .collect::<Vec<i64>>();
+            .map(|x| x.parse::<u32>().unwrap())
+            .collect::<Vec<u32>>();
 
         section.push((line_data[0], line_data[1], line_data[2]));
     }
 
-    // println!("end of section");
     sections.push(section.clone());
 
-    println!("processing...");
-
-    for seed in seeds.iter_mut() {
-        for section in sections.clone() {
-            // println!("section: {:?}", section);
-
-            for set in section.clone() {
-                // println!("set: {:?}", set);
-
-                let (destination, source, range) = set;
-
-                if source <= seed.seed && seed.seed < source + range {
-                    seed.soil -= source;
-                    seed.soil += destination;
-
-                    // println!("{} -> {}", seed.seed, seed.soil);
-
-                    seed.seed = seed.soil;
-
+    for seed in &mut seeds {
+        for section in &sections {
+            for &(destination, source, range) in section {
+                if source <= *seed && *seed < source + range {
+                    *seed = *seed - source + destination;
                     break;
                 }
             }
         }
     }
 
-    // println!("seeds:");
-    // for seed in seeds.clone() {
-    //     println!("{:?}", seed);
-    // }
-
-    answer = seeds
-        .iter()
-        .min_by(|a, b| a.seed.cmp(&b.seed))
-        .unwrap()
-        .seed;
+    answer = seeds.iter().min().unwrap();
 
     println!("Part 1: {}", answer);
 }
 
 fn part_2(input: String) {
-    let mut answer = 0;
+    let answer;
+
+    let seeds_ranges = input
+        .lines()
+        .next()
+        .unwrap()
+        .split(':')
+        .nth(1)
+        .unwrap()
+        .trim()
+        .split_whitespace()
+        .map(|x| x.parse::<u64>().unwrap())
+        .collect::<Vec<u64>>();
+
+    let mut seed_sets = seeds_ranges.chunks(2).collect::<Vec<&[u64]>>();
+
+    let mut seeds = Vec::new();
+
+    for seed_set in &mut seed_sets {
+        let r =
+            (seed_set[0]..(seed_set[0] + seed_set[1])).collect::<Vec<u64>>();
+        seeds.append(&mut r.clone());
+    }
+
+    let mut sections = Vec::new();
+    let mut section = Vec::new();
+
+    for line in input.lines().skip(2) {
+        if line.is_empty() {
+            sections.push(section.clone());
+            continue;
+        }
+
+        if line.ends_with(':') {
+            section = Vec::new();
+            continue;
+        }
+
+        let line_data = line
+            .split(' ')
+            .map(|x| x.parse::<u64>().unwrap())
+            .collect::<Vec<u64>>();
+
+        section.push((line_data[0], line_data[1], line_data[2]));
+    }
+
+    sections.push(section.clone());
+
+    for seed in &mut seeds {
+        for section in &sections {
+            for &(destination, source, range) in section {
+                if source <= *seed && *seed < source + range {
+                    *seed = *seed - source + destination;
+                    break;
+                }
+            }
+        }
+    }
+
+    answer = seeds.iter().min().unwrap();
 
     println!("Part 2: {}", answer);
 }
