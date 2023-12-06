@@ -1,15 +1,21 @@
+use std::time::Instant;
+
 fn main() {
     let day = 5;
     let input = aoc_2023::get_input(day, false);
     println!("Day {}", day);
+    let start = Instant::now();
     part_1(input.clone());
+    let duration = start.elapsed();
+    println!("Part 1 finished in {}ms", duration.as_millis());
+    let start = Instant::now();
     part_2(input.clone());
+    let duration = start.elapsed();
+    println!("Part 2 finished in {}ms", duration.as_millis());
 }
 
 fn part_1(input: String) {
-    let answer;
-
-    let mut seeds = input
+    let seeds = input
         .lines()
         .next()
         .unwrap()
@@ -45,25 +51,28 @@ fn part_1(input: String) {
 
     sections.push(section.clone());
 
-    for seed in &mut seeds {
+    let mut min = u32::MAX;
+
+    for seed in seeds {
+        let mut seed = seed;
         for section in &sections {
             for &(destination, source, range) in section {
-                if source <= *seed && *seed < source + range {
-                    *seed = *seed - source + destination;
+                if source <= seed && seed < source + range {
+                    seed = seed - source + destination;
                     break;
                 }
             }
         }
+
+        if seed < min {
+            min = seed;
+        }
     }
 
-    answer = seeds.iter().min().unwrap();
-
-    println!("Part 1: {}", answer);
+    println!("Part 1: {}", min);
 }
 
 fn part_2(input: String) {
-    let answer;
-
     let seeds_ranges = input
         .lines()
         .next()
@@ -73,18 +82,10 @@ fn part_2(input: String) {
         .unwrap()
         .trim()
         .split_whitespace()
-        .map(|x| x.parse::<u64>().unwrap())
-        .collect::<Vec<u64>>();
+        .map(|x| x.parse::<u32>().unwrap())
+        .collect::<Vec<u32>>();
 
-    let mut seed_sets = seeds_ranges.chunks(2).collect::<Vec<&[u64]>>();
-
-    let mut seeds = Vec::new();
-
-    for seed_set in &mut seed_sets {
-        let r =
-            (seed_set[0]..(seed_set[0] + seed_set[1])).collect::<Vec<u64>>();
-        seeds.append(&mut r.clone());
-    }
+    let seed_sets = seeds_ranges.chunks(2).collect::<Vec<&[u32]>>();
 
     let mut sections = Vec::new();
     let mut section = Vec::new();
@@ -102,26 +103,36 @@ fn part_2(input: String) {
 
         let line_data = line
             .split(' ')
-            .map(|x| x.parse::<u64>().unwrap())
-            .collect::<Vec<u64>>();
+            .map(|x| x.parse::<u32>().unwrap())
+            .collect::<Vec<u32>>();
 
         section.push((line_data[0], line_data[1], line_data[2]));
     }
 
     sections.push(section.clone());
 
-    for seed in &mut seeds {
-        for section in &sections {
-            for &(destination, source, range) in section {
-                if source <= *seed && *seed < source + range {
-                    *seed = *seed - source + destination;
-                    break;
+    let mut min = u32::MAX;
+
+    for set in seed_sets {
+        let (start, range) = (set[0], set[1]);
+
+        for seed in start..(start + range) {
+            let mut seed = seed;
+
+            for section in &sections {
+                for &(destination, source, range) in section {
+                    if source <= seed && seed < source + range {
+                        seed = seed - source + destination;
+                        break;
+                    }
                 }
+            }
+
+            if seed < min {
+                min = seed;
             }
         }
     }
 
-    answer = seeds.iter().min().unwrap();
-
-    println!("Part 2: {}", answer);
+    println!("Part 2: {}", min);
 }

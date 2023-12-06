@@ -1,8 +1,8 @@
 use std::time::Instant;
 
 fn main() {
-    let day = 0;
-    let input = aoc_2023::get_input(day, true);
+    let day = 6;
+    let input = aoc_2023::get_input(day, false);
     println!("Day {}", day);
     let start = Instant::now();
     part_1(input.clone());
