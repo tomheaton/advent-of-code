@@ -2,7 +2,7 @@ use std::time::Instant;
 
 fn main() {
     let day = 8;
-    let input = aoc_2023::get_input(day, true);
+    let input = aoc_2023::get_input(day, false);
     println!("Day {}", day);
     let start = Instant::now();
     part_1(input.clone());
@@ -36,31 +36,27 @@ fn part_1(input: String) {
     }
 
     let mut current_node = nodes[answer].clone();
-    println!("Current node: {:?}", current_node);
+    // println!("Initial node: {:?}", current_node);
 
     loop {
-        println!("Current node: {:?}", current_node);
+        // println!("Current node: {:?}", current_node);
 
         if current_node.0 == "ZZZ" {
             println!("Found ZZZ");
             break;
         }
 
-        println!("Answer: {}", answer);
-
-        if (answer > instructions.len()) {
-            println!("Answer is too big");
-            break;
-        }
-
-        let instruction = instructions.chars().nth(answer).unwrap();
+        let instruction = instructions
+            .chars()
+            .nth(answer % instructions.chars().count())
+            .unwrap();
 
         match instruction {
             'L' => {
-                println!("Left");
+                // println!("Left");
 
                 let id = (current_node.clone().1).0;
-                println!("moving to {}", id);
+                // println!("moving to {}", id);
 
                 'lol: for node in nodes.iter() {
                     if node.0 == id {
@@ -70,10 +66,10 @@ fn part_1(input: String) {
                 }
             }
             'R' => {
-                println!("Right");
+                // println!("Right");
 
                 let id = (current_node.clone().1).1;
-                println!("moving to {}", id);
+                // println!("moving to {}", id);
 
                 'lol: for node in nodes.iter() {
                     if node.0 == id {
@@ -87,8 +83,6 @@ fn part_1(input: String) {
 
         answer += 1;
     }
-
-    // answer -= 1;
 
     println!("Part 1: {}", answer);
 }
